@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Cammini sfuggenti</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Cammini sfuggenti: un taccuino di cammini fatti a piedi, un articolo per ogni strada percorsa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap">
+<style>
+/* Layout: una sola colonna di testo (~38em); le immagini respirano più larghe del testo, come finestre sul paesaggio. */
+:root {
+  --mist: #edf0ed;      /* fondo: nebbia di valle */
+  --paper: #f6f7f4;     /* superfici chiare */
+  --ink: #2c3833;       /* testo: ardesia verde */
+  --soft: #66746d;      /* testo secondario */
+  --sage: #869a8c;      /* accento: lichene */
+  --dawn: #b48b82;      /* dettaglio: rosa dell'alba */
+  --line: #d3dbd5;
+  --img-bright: 1;
+
+  --display: "Cormorant Garamond", "Cormorant", Garamond, "Times New Roman", serif;
+  --text: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
+
+  --col: 38rem;
+  --wide: 66rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mist: #141917; --paper: #1a201d; --ink: #dce3dd; --soft: #9aa69f;
+    --sage: #93a99a; --dawn: #c9a197; --line: #2c3531; --img-bright: .86;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --mist: #141917; --paper: #1a201d; --ink: #dce3dd; --soft: #9aa69f;
+  --sage: #93a99a; --dawn: #c9a197; --line: #2c3531; --img-bright: .86;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  background: var(--mist);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.1875rem;
+  line-height: 1.7;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+
+a { color: inherit; text-decoration-color: var(--sage); text-underline-offset: .2em; text-decoration-thickness: 1px; }
+a:hover { color: var(--sage); }
+:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; border-radius: 2px; }
+
+/* colonna unica: il testo al centro, le figure possono allargarsi */
+.col {
+  display: grid;
+  grid-template-columns: 1fr min(var(--col), 100%) 1fr;
+}
+.col > * { grid-column: 2; min-width: 0; }
+.col > .wide { grid-column: 1 / -1; width: 100%; max-width: var(--wide); justify-self: center; }
+
+/* ——— testata ——— */
+.masthead { padding-block: clamp(3.5rem, 10vw, 7rem) 0; text-align: left; }
+.eyebrow {
+  font-family: var(--display);
+  font-size: .95rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin: 0;
+}
+.site-name {
+  font-family: var(--display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(3.4rem, 11vw, 7.25rem);
+  line-height: .95;
+  letter-spacing: -.01em;
+  margin: .35em 0 .3em;
+  text-wrap: balance;
+}
+.site-name span { display: block; padding-left: 1.1em; color: var(--sage); }
+.intro { font-size: 1.25rem; color: var(--soft); max-width: 32rem; margin: 0; font-style: italic; font-weight: 300; }
+
+/* immagini */
+figure { margin: 0; }
+.plate { display: block; width: 100%; max-width: 100%; height: auto; background: var(--line); filter: brightness(var(--img-bright)); }
+.r-pano { aspect-ratio: 21 / 8; }
+.r-hero { aspect-ratio: 16 / 9; }
+.r-mid  { aspect-ratio: 3 / 2; }
+figcaption {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--soft);
+  margin-top: .7rem;
+  padding-inline: 2px;
+}
+.wide figcaption { max-width: var(--col); margin-inline: auto; }
+
+.masthead figure { margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+/* indice */
+.index { padding-block: clamp(3rem, 7vw, 5rem) 0; }
+.index h2 {
+  font-family: var(--display); font-weight: 500; font-size: .95rem;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--soft); margin: 0 0 1rem;
+}
+.index ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.index li { border-bottom: 1px solid var(--line); }
+.index a {
+  display: grid; grid-template-columns: 3.6rem 1fr auto; gap: 1rem; align-items: baseline;
+  padding: .85rem 0; text-decoration: none;
+}
+.index .yr, .index .km { font-variant-numeric: tabular-nums oldstyle-nums; color: var(--soft); font-size: 1rem; }
+.index .nm { font-family: var(--display); font-size: 1.55rem; line-height: 1.2; min-width: 0; }
+.index a:hover .nm { color: var(--sage); }
+.index .total { margin: 1rem 0 0; color: var(--soft); font-size: 1rem; font-style: italic; }
+
+/* ——— articoli ——— */
+.walk { padding-block: clamp(2rem, 5vw, 3rem) 0; scroll-margin-top: 1.5rem; }
+.walk header { margin-bottom: clamp(2rem, 5vw, 3rem); }
+.walk .when {
+  font-family: var(--display); font-size: .95rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--dawn); margin: 0;
+}
+.walk h2 {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(2.5rem, 7vw, 4.25rem); line-height: 1.02;
+  margin: .3em 0 .35em; text-wrap: balance;
+}
+.walk .dek { font-style: italic; font-weight: 300; font-size: 1.3rem; color: var(--soft); margin: 0; line-height: 1.5; text-wrap: pretty; }
+
+.facts {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem 1.5rem;
+  margin: clamp(2rem, 5vw, 2.75rem) 0 2.25rem; padding: 1.25rem 0;
+  border-block: 1px solid var(--line);
+}
+.facts div { min-width: 0; }
+.facts dt {
+  font-family: var(--display); font-size: .82rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--soft);
+}
+.facts dd { margin: .15rem 0 0; font-size: 1.15rem; font-variant-numeric: tabular-nums lining-nums; line-height: 1.35; }
+@media (max-width: 34rem) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.walk p { margin: 0 0 1.25em; text-wrap: pretty; hyphens: auto; }
+.walk .body > p:first-of-type::first-line { font-variant: small-caps; letter-spacing: .04em; }
+
+blockquote {
+  margin: 2.5rem 0; padding: 0;
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(1.7rem, 4.5vw, 2.2rem); line-height: 1.25; color: var(--sage);
+  text-wrap: balance;
+}
+blockquote p { margin: 0 !important; }
+
+.walk .wide.inset { margin-block: 2.75rem; }
+.walk .mid { margin-block: 2.5rem; }
+
+.back { font-family: var(--display); font-style: italic; font-size: 1.05rem; color: var(--soft); margin-top: .5rem; }
+.back a { text-decoration: none; }
+.back a:hover { text-decoration: underline; }
+
+/* ometto di pietre fra un cammino e l'altro */
+.cairn { display: flex; justify-content: center; padding-block: clamp(3.5rem, 9vw, 6rem) clamp(1.5rem, 4vw, 2.5rem); }
+.cairn svg { width: 46px; height: auto; color: var(--sage); }
+
+footer.site { padding-block: 4rem 3.5rem; color: var(--soft); text-align: center; }
+footer.site .sig { font-family: var(--display); font-style: italic; font-size: 1.6rem; color: var(--ink); margin: 0 0 .25rem; }
+footer.site p { margin: 0; font-size: 1rem; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ometto" viewBox="0 0 46 40">
+    <ellipse cx="23" cy="34" rx="20" ry="5.5" fill="currentColor" opacity=".55"/>
+    <ellipse cx="22" cy="23.5" rx="14" ry="5" fill="currentColor" opacity=".7"/>
+    <ellipse cx="24" cy="14" rx="9" ry="4.2" fill="currentColor" opacity=".85"/>
+    <ellipse cx="23" cy="6.5" rx="5" ry="3.2" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<header class="masthead col" id="inizio">
+  <p class="eyebrow">Taccuino di cammino</p>
+  <h1 class="site-name">Cammini <span>sfuggenti</span></h1>
+  <p class="intro">Strade percorse a piedi, lontano dalla fretta. Un articolo per ogni cammino: i chilometri, i paesaggi e quello che resta addosso quando si torna a casa.</p>
+  <figure class="wide">
+    <canvas class="plate r-pano" data-scene="alba" role="img" aria-label="Crinali appenninici sfumati nella nebbia all'alba"></canvas>
+    <figcaption>Crinali all'alba, quando la nebbia non si è ancora alzata.</figcaption>
+  </figure>
+</header>
+
+<nav class="index col" aria-labelledby="indice-titolo">
+  <h2 id="indice-titolo">I cammini</h2>
+  <ol>
+    <li><a href="#via-degli-dei"><span class="yr">2025</span><span class="nm">La Via degli Dei</span><span class="km">120 km</span></a></li>
+    <li><a href="#sentiero-degli-dei"><span class="yr">2025</span><span class="nm">Il Sentiero degli Dei</span><span class="km">7,8 km</span></a></li>
+    <li><a href="#francigena-toscana"><span class="yr">2024</span><span class="nm">Via Francigena, da San Miniato a Siena</span><span class="km">89 km</span></a></li>
+    <li><a href="#cammino-di-oropa"><span class="yr">2023</span><span class="nm">Il Cammino di Oropa</span><span class="km">63 km</span></a></li>
+  </ol>
+  <p class="total">Quattro cammini, circa 280 chilometri a piedi.</p>
+</nav>
+
+<div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
+
+<!-- ——— Via degli Dei ——— -->
+<article class="walk col" id="via-degli-dei">
+  <header>
+    <p class="when">Settembre 2025 · Appennino tosco-emiliano</p>
+    <h2>La Via degli Dei</h2>
+    <p class="dek">Cinque giorni per attraversare l'Appennino a piedi, da Piazza Maggiore a Piazza della Signoria, sulle tracce di un'antica strada romana.</p>
+  </header>
+  <figure class="wide">
+    <canvas class="plate r-hero" data-scene="appennino" role="img" aria-label="Valle coperta di nebbia vista da un crinale boscoso"></canvas>
+    <figcaption>La valle del Setta all'alba, dal crinale di Monte Adone.</figcaption>
+  </figure>
+  <dl class="facts">
+    <div><dt>Distanza</dt><dd>120 km</dd></div>
+    <div><dt>Giorni</dt><dd>5</dd></div>
+    <div><dt>Dislivello</dt><dd>+3.900 m</dd></div>
+    <div><dt>Percorso</dt><dd>Bologna → Firenze</dd></div>
+  </dl>
+  <div class="body">
+    <p>Ho lasciato Bologna salendo sotto i portici di San Luca, quando la città dormiva ancora. Seicentosessantasei archi, contati uno per uno per non pensare alla salita. Dal santuario il primo sguardo sui colli: dietro restava tutto ciò che conoscevo, davanti si aprivano crinali uno dopo l'altro, sempre più chiari, fino a confondersi con il cielo.</p>
+    <p>Il secondo giorno la nebbia ha riempito la valle. Camminavo sopra un mare bianco, e i paesi sotto di me esistevano solo per il suono delle campane. Sul cammino il tempo si misura in un altro modo: una fontana, un'ombra, la prossima curva.</p>
+    <blockquote><p>Tra le pietre della vecchia strada romana ho sentito i passi di chi era passato prima di me.</p></blockquote>
+    <p>Dopo Madonna dei Fornelli il bosco di faggi si apre su tratti di Flaminia Militare, la strada che i legionari tracciarono nel 187 a.C. Le pietre sono ancora lì, lucidate da duemila anni di suole. Quella notte ho dormito in un rifugio con sei sconosciuti, che la mattina dopo non lo erano più.</p>
+    <p>L'ultimo giorno, da Fiesole, Firenze è apparsa tutta insieme, con la cupola al centro come un sasso nel palmo di una mano. Ho fatto l'ultima discesa piano, senza nessuna fretta di arrivare.</p>
+  </div>
+  <p class="back"><a href="#inizio">Torna all'inizio</a></p>
+</article>
+
+<div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
+
+<!-- ——— Sentiero degli Dei ——— -->
+<article class="walk col" id="sentiero-degli-dei">
+  <header>
+    <p class="when">Aprile 2025 · Costiera Amalfitana</p>
+    <h2>Il Sentiero degli Dei</h2>
+    <p class="dek">Una giornata sospesa tra la montagna e il mare, sopra Positano, con il profumo del rosmarino e della ginestra.</p>
+  </header>
+  <figure class="wide">
+    <canvas class="plate r-hero" data-scene="costiera" role="img" aria-label="Promontori che scendono nel mare calmo, con un pino in primo piano"></canvas>
+    <figcaption>Il golfo di Positano dal tratto di Colle Serra, a metà mattina.</figcaption>
+  </figure>
+  <dl class="facts">
+    <div><dt>Distanza</dt><dd>7,8 km</dd></div>
+    <div><dt>Giorni</dt><dd>1</dd></div>
+    <div><dt>Dislivello</dt><dd>+150 / −340 m</dd></div>
+    <div><dt>Percorso</dt><dd>Bomerano → Nocelle</dd></div>
+  </dl>
+  <div class="body">
+    <p>Da Bomerano il sentiero parte tra orti e muretti a secco, poi la montagna si apre di colpo e sotto c'è soltanto il mare. Non è un cammino lungo. È un cammino lento, perché ogni dieci passi viene voglia di fermarsi.</p>
+    <p>Il tracciato corre a mezza costa, a circa cinquecento metri sul mare. Le terrazze di limoni scendono verso Positano come gradini per giganti, e le capre sembrano le uniche a sapere esattamente dove stanno andando.</p>
+    <blockquote><p>Il mare, da lassù, non fa rumore. Si limita a esserci.</p></blockquote>
+    <p>A Nocelle, una spremuta di limone su un gradino di pietra e nessuna voglia di ripartire. Per scendere a Positano restano più di millesettecento scalini: li ho fatti contando le lucertole invece dei gradini.</p>
+  </div>
+  <p class="back"><a href="#inizio">Torna all'inizio</a></p>
+</article>
+
+<div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
+
+<!-- ——— Via Francigena ——— -->
+<article class="walk col" id="francigena-toscana">
+  <header>
+    <p class="when">Maggio 2024 · Toscana</p>
+    <h2>Via Francigena, da San Miniato a Siena</h2>
+    <p class="dek">Quattro tappe nella Toscana dei cipressi, sulla strada dei pellegrini diretti a Roma.</p>
+  </header>
+  <figure class="wide">
+    <canvas class="plate r-hero" data-scene="toscana" role="img" aria-label="Colline morbide con filari di cipressi nella luce velata"></canvas>
+    <figcaption>Colline tra Gambassi Terme e San Gimignano, primo pomeriggio.</figcaption>
+  </figure>
+  <dl class="facts">
+    <div><dt>Distanza</dt><dd>89 km</dd></div>
+    <div><dt>Giorni</dt><dd>4</dd></div>
+    <div><dt>Dislivello</dt><dd>+1.850 m</dd></div>
+    <div><dt>Percorso</dt><dd>San Miniato → Siena</dd></div>
+  </dl>
+  <div class="body">
+    <p>In Toscana la Francigena è una strada bianca che non ha fretta. Da San Miniato a Gambassi Terme le colline si susseguono morbide, e ogni crinale ha la sua fila di cipressi che indica la strada meglio di qualsiasi segnavia.</p>
+    <p>San Gimignano è apparsa di pomeriggio, con le torri ferme come un gruppo di persone in attesa. Ho dormito in un ostello per pellegrini, con il timbro sulla credenziale ancora umido d'inchiostro.</p>
+    <blockquote><p>Ogni timbro sulla credenziale è un piccolo giorno che resta.</p></blockquote>
+    <figure class="mid">
+      <canvas class="plate r-mid" data-scene="campi" role="img" aria-label="Campi di grano e un castello lontano sulla collina"></canvas>
+      <figcaption>Verso Monteriggioni, la luce del tardo pomeriggio sui campi.</figcaption>
+    </figure>
+    <p>La tappa più lunga, fino a Monteriggioni, attraversa boschi e campi di grano. Le mura del castello compaiono sulla collina come una corona appoggiata sull'erba. L'ultimo giorno si entra a Siena da Porta Camollia, dove un'iscrizione latina promette che la città apre il cuore più della sua porta. Ed è vero.</p>
+  </div>
+  <p class="back"><a href="#inizio">Torna all'inizio</a></p>
+</article>
+
+<div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
+
+<!-- ——— Cammino di Oropa ——— -->
+<article class="walk col" id="cammino-di-oropa">
+  <header>
+    <p class="when">Ottobre 2023 · Biellese</p>
+    <h2>Il Cammino di Oropa</h2>
+    <p class="dek">Dalla pianura delle risaie al santuario tra le montagne, salendo piano verso le Alpi.</p>
+  </header>
+  <figure class="wide">
+    <canvas class="plate r-hero" data-scene="alpi" role="img" aria-label="Catene montuose azzurre che si sovrappongono nella foschia"></canvas>
+    <figcaption>Le Alpi biellesi dalla Serra, in una mattina di foschia.</figcaption>
+  </figure>
+  <dl class="facts">
+    <div><dt>Distanza</dt><dd>63 km</dd></div>
+    <div><dt>Giorni</dt><dd>4</dd></div>
+    <div><dt>Dislivello</dt><dd>+1.700 m</dd></div>
+    <div><dt>Percorso</dt><dd>Santhià → Oropa</dd></div>
+  </dl>
+  <div class="body">
+    <p>Il Cammino di Oropa comincia dove finisce la pianura. A Santhià, in ottobre, le risaie sono già asciutte, e il Monte Rosa all'orizzonte sembra disegnato a matita su un foglio azzurro.</p>
+    <p>Il percorso sale piano, lungo la Serra morenica e attraverso i borghi del Biellese. Castagne sui sentieri, fumo dai camini, cani che accompagnano per un tratto e poi tornano indietro. È un cammino breve, adatto a un lungo fine settimana, ma lascia addosso una quiete lunga.</p>
+    <blockquote><p>Le montagne non si avvicinano: a un certo punto ti accorgi di esserci dentro.</p></blockquote>
+    <figure class="mid">
+      <canvas class="plate r-mid" data-scene="oropa" role="img" aria-label="Valle di montagna con nuvole basse e abeti"></canvas>
+      <figcaption>Valle di Oropa, nuvole basse sull'ultima tappa.</figcaption>
+    </figure>
+    <p>L'ultima tappa entra nella valle, e le nuvole si abbassano fino a toccare il sentiero. Il santuario compare tutto insieme, grigio e silenzioso, con le cime alle spalle. Ho acceso una candela, senza una preghiera precisa. Per ringraziare la strada.</p>
+  </div>
+  <p class="back"><a href="#inizio">Torna all'inizio</a></p>
+</article>
+
+<footer class="site col">
+  <div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
+  <p class="sig">Cammini sfuggenti</p>
+  <p>Scritto a piedi, un passo alla volta. © 2026</p>
+</footer>
+
+<script>
+(function () {
+  // Generatore pseudo-casuale con seme: ogni paesaggio è sempre uguale a sé stesso.
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function noise1(r, n) {
+    var v = []; for (var i = 0; i <= n + 1; i++) v.push(r());
+    return function (x) {
+      var i = Math.floor(x), f = x - i, s = f * f * (3 - 2 * f);
+      return v[i] * (1 - s) + v[i + 1] * s;
+    };
+  }
+  function makeRidge(r, freq, sharp, oct) {
+    oct = oct || 5; var ns = [];
+    for (var o = 0; o < oct; o++) ns.push(noise1(r, Math.ceil(freq * Math.pow(2, o)) + 1));
+    return function (t) {
+      var s = 0, a = 1, tot = 0;
+      for (var o = 0; o < oct; o++) {
+        var v = ns[o](t * freq * Math.pow(2, o));
+        if (sharp) v = 1 - Math.abs(v * 2 - 1);
+        s += v * a; tot += a; a *= sharp ? .5 : .45;
+      }
+      return s / tot;
+    };
+  }
+  function hex(h) { h = h.replace('#', ''); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
+  function mix(a, b, t) { a = hex(a); b = hex(b); return 'rgb(' + [0, 1, 2].map(function (i) { return Math.round(a[i] + (b[i] - a[i]) * t); }).join(',') + ')'; }
+  function rgba(h, al) { var c = hex(h); return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + al + ')'; }
+  function smooth(a, b, x) { var t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+
+  var SCENES = {
+    alba:      { seed: 7,  kind: 'hills', sky: ['#d9dde4', '#ecdfdc', '#eef0ec'], far: '#d2d6dd', near: '#6c7a74', fog: '#eef0ec', layers: 6, top: .42, bottom: .9, amp: .2, mist: .75, sun: [.68, .52, .03], sunC: '#f8e6dc' },
+    appennino: { seed: 11, kind: 'hills', sky: ['#d6dfe2', '#e9ece6', '#f0f0ea'], far: '#c7d1cd', near: '#43554d', fog: '#eff1ec', layers: 6, top: .4, bottom: .86, amp: .22, mist: .85, sun: [.74, .3, .032], sunC: '#f7ecdc', trees: 'fir', birds: 3 },
+    costiera:  { seed: 23, kind: 'sea',   sky: ['#d3dee7', '#e9ebe8', '#f2eee6'], sea: ['#c3d1d8', '#8ea5b0'], far: '#bfcacf', near: '#5a6b66', fog: '#eef0ee', horizon: .55, sun: [.36, .26, .03], sunC: '#fbf1e1', birds: 2 },
+    toscana:   { seed: 5,  kind: 'hills', sky: ['#dbe2e1', '#ece9e1', '#f0ebe1'], far: '#ccd3c6', near: '#66775a', fog: '#efeee7', layers: 5, top: .45, bottom: .9, amp: .16, mist: .55, sun: [.82, .22, .028], sunC: '#f9ecd6', trees: 'cypress' },
+    campi:     { seed: 41, kind: 'hills', sky: ['#e1e2dc', '#eee6da', '#f1e8da'], far: '#d3d2c3', near: '#8a8a63', fog: '#f1ece1', layers: 5, top: .48, bottom: .92, amp: .13, mist: .5, sun: [.18, .34, .03], sunC: '#fbe9cf', trees: 'cypress', castle: true },
+    alpi:      { seed: 3,  kind: 'mountains', sky: ['#cfd8e1', '#e5e9ec', '#eef0f0'], far: '#c4ccd6', near: '#47535e', fog: '#edf0f1', layers: 6, top: .3, bottom: .86, amp: .3, mist: .8, sun: [.22, .2, .026], sunC: '#f6f1e6', birds: 2 },
+    oropa:     { seed: 19, kind: 'mountains', sky: ['#cdd4da', '#dfe4e6', '#e9ecec'], far: '#bfc8cc', near: '#3e4c48', fog: '#e8ecec', layers: 5, top: .26, bottom: .88, amp: .34, mist: .95, trees: 'fir' }
+  };
+
+  function drawTree(x, type, px, py, h, col) {
+    x.fillStyle = col;
+    if (type === 'cypress') {
+      x.beginPath(); x.ellipse(px, py - h / 2, h * .13, h / 2, 0, 0, Math.PI * 2); x.fill();
+    } else {
+      x.beginPath(); x.moveTo(px, py - h);
+      x.lineTo(px + h * .26, py); x.lineTo(px - h * .26, py); x.closePath(); x.fill();
+    }
+  }
+
+  function draw(c) {
+    var cfg = SCENES[c.dataset.scene]; if (!cfg) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = c.clientWidth; if (!cw) return;
+    var ratio = { 'r-pano': 8 / 21, 'r-hero': 9 / 16, 'r-mid': 2 / 3 };
+    var k = Object.keys(ratio).find(function (n) { return c.classList.contains(n); });
+    var W = Math.round(cw * dpr), H = Math.round(cw * ratio[k] * dpr);
+    if (c.width === W && c.height === H && c.dataset.drawn) return;
+    c.width = W; c.height = H; c.dataset.drawn = '1';
+    var x = c.getContext('2d'), r = rng(cfg.seed), step = Math.max(2, Math.round(W / 600));
+
+    // cielo
+    var g = x.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, cfg.sky[0]); g.addColorStop(.55, cfg.sky[1]); g.addColorStop(1, cfg.sky[2]);
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+
+    // sole velato
+    if (cfg.sun) {
+      var sx = cfg.sun[0] * W, sy = cfg.sun[1] * H, sr = cfg.sun[2] * W;
+      var sg = x.createRadialGradient(sx, sy, 0, sx, sy, sr * 9);
+      sg.addColorStop(0, rgba(cfg.sunC, .75)); sg.addColorStop(.25, rgba(cfg.sunC, .3)); sg.addColorStop(1, rgba(cfg.sunC, 0));
+      x.fillStyle = sg; x.fillRect(0, 0, W, H);
+      x.fillStyle = rgba(cfg.sunC, .95); x.beginPath(); x.arc(sx, sy, sr, 0, Math.PI * 2); x.fill();
+    }
+
+    // uccelli lontani
+    if (cfg.birds) {
+      x.strokeStyle = rgba(cfg.near, .45); x.lineWidth = Math.max(1, W / 900); x.lineCap = 'round';
+      for (var b = 0; b < cfg.birds; b++) {
+        var bx = W * (.15 + r() * .6), by = H * (.12 + r() * .15), bs = W * (.006 + r() * .004);
+        x.beginPath(); x.moveTo(bx - bs, by - bs * .4); x.quadraticCurveTo(bx - bs * .4, by - bs * .7, bx, by);
+        x.quadraticCurveTo(bx + bs * .4, by - bs * .7, bx + bs, by - bs * .4); x.stroke();
+      }
+    }
+
+    if (cfg.kind === 'sea') return drawSea(x, cfg, r, W, H, step);
+
+    var L = cfg.layers;
+    for (var i = 0; i < L; i++) {
+      var t = i / (L - 1), col = mix(cfg.far, cfg.near, Math.pow(t, 1.15));
+      var base = H * (cfg.top + (cfg.bottom - cfg.top) * t);
+      var amp = H * cfg.amp * (cfg.kind === 'mountains' ? (1.1 - t * .45) : (.7 + t * .5));
+      var ridge = makeRidge(r, cfg.kind === 'mountains' ? 2 + i * .6 : 1.4 + i * .5, cfg.kind === 'mountains' && i < L - 1);
+      var ys = [];
+      x.beginPath(); x.moveTo(0, H);
+      for (var px = 0; px <= W + step; px += step) {
+        var y = base - ridge(px / W) * amp; ys.push(y); x.lineTo(px, y);
+      }
+      x.lineTo(W, H); x.closePath(); x.fillStyle = col; x.fill();
+
+      if (cfg.castle && i === 1) {
+        var cx = W * .7, cy = ys[Math.round(cx / step)] + 2, cs = H * .028;
+        x.fillStyle = col;
+        x.fillRect(cx - cs * 2.2, cy - cs, cs * 4.4, cs);
+        for (var tw = -2; tw <= 2; tw++) x.fillRect(cx + tw * cs * 1.05 - cs * .2, cy - cs * 1.45, cs * .4, cs * .5);
+      }
+
+      if (cfg.trees && i >= L - 2) {
+        var tc = mix(cfg.near, '#1e2622', i === L - 1 ? .35 : .12);
+        var th = H * (i === L - 1 ? .075 : .045);
+        var gap = cfg.trees === 'cypress' ? W * .012 : W * .008;
+        var px2 = r() * gap * 3;
+        while (px2 < W) {
+          var row = cfg.trees === 'cypress' ? (r() < .5) : (r() < .7);
+          if (row) drawTree(x, cfg.trees, px2, ys[Math.round(px2 / step)] + th * .15, th * (.7 + r() * .5), tc);
+          px2 += gap * (cfg.trees === 'cypress' && r() < .2 ? 6 + r() * 14 : 1 + r() * 1.5);
+        }
+      }
+
+      if (i < L - 1) {
+        var m0 = base - amp * .35, m1 = base + H * .1;
+        var mg = x.createLinearGradient(0, m0, 0, m1);
+        mg.addColorStop(0, rgba(cfg.fog, 0)); mg.addColorStop(.65, rgba(cfg.fog, cfg.mist * (1 - t * .5))); mg.addColorStop(1, rgba(cfg.fog, cfg.mist * .6));
+        x.fillStyle = mg; x.fillRect(0, m0, W, m1 - m0);
+      }
+    }
+  }
+
+  function drawSea(x, cfg, r, W, H, step) {
+    var hz = H * cfg.horizon;
+    var g = x.createLinearGradient(0, hz, 0, H);
+    g.addColorStop(0, cfg.sea[0]); g.addColorStop(1, cfg.sea[1]);
+    x.fillStyle = g; x.fillRect(0, hz, W, H - hz);
+
+    // riflessi del sole
+    var sx = cfg.sun[0] * W;
+    x.strokeStyle = rgba(cfg.sunC, .55); x.lineCap = 'round';
+    for (var s = 0; s < 70; s++) {
+      var yy = hz + Math.pow(r(), 1.6) * (H - hz) * .9 + 2;
+      var spread = (yy - hz) / (H - hz);
+      var len = W * (.01 + r() * .03) * (1 - spread * .5);
+      var xx = sx + (r() - .5) * W * (.05 + spread * .25);
+      x.lineWidth = Math.max(1, H / 500); x.globalAlpha = .9 - spread * .7;
+      x.beginPath(); x.moveTo(xx - len / 2, yy); x.lineTo(xx + len / 2, yy); x.stroke();
+    }
+    x.globalAlpha = 1;
+
+    // promontori: dal più lontano al più vicino, tutti scendono in mare verso sinistra
+    var heads = [
+      { edge: .5,  h: .14, base: 0,   t: 0 },
+      { edge: .62, h: .22, base: .04, t: .35 },
+      { edge: .78, h: .34, base: .1,  t: .7 }
+    ];
+    heads.forEach(function (hd, n) {
+      var ridge = makeRidge(r, 2 + n, false);
+      var col = mix(cfg.far, cfg.near, hd.t), by = hz + (H - hz) * hd.base;
+      x.beginPath(); x.moveTo(W, by);
+      var first = true;
+      for (var px = W; px >= 0; px -= step) {
+        var tt = px / W, env = smooth(hd.edge - .3, hd.edge + .1, tt);
+        var y = by - H * hd.h * env * (.55 + ridge(tt) * .6);
+        x.lineTo(px, Math.min(y, by));
+      }
+      x.lineTo(0, by); x.closePath(); x.fillStyle = col; x.fill();
+      // velo di foschia sul mare davanti al promontorio
+      var mg = x.createLinearGradient(0, by - H * .06, 0, by + H * .04);
+      mg.addColorStop(0, rgba(cfg.fog, 0)); mg.addColorStop(.7, rgba(cfg.fog, .45)); mg.addColorStop(1, rgba(cfg.fog, 0));
+      x.fillStyle = mg; x.fillRect(0, by - H * .06, W, H * .1);
+    });
+
+    // costa in primo piano e pino marittimo
+    var near = mix(cfg.near, '#1f2724', .3), ridge = makeRidge(r, 1.5, false);
+    x.beginPath(); x.moveTo(0, H);
+    for (var px = 0; px <= W * .42; px += step) {
+      var tt = px / (W * .42);
+      x.lineTo(px, H * (.8 + .22 * smooth(0, 1, tt)) - ridge(tt) * H * .06);
+    }
+    x.lineTo(W * .42, H); x.closePath(); x.fillStyle = near; x.fill();
+
+    var tx = W * .13, ty = H * .82;
+    x.strokeStyle = near; x.lineWidth = W * .005;
+    x.beginPath(); x.moveTo(tx, ty); x.quadraticCurveTo(tx + W * .015, ty - H * .2, tx + W * .05, ty - H * .36); x.stroke();
+    x.fillStyle = near;
+    [[.05, -.38, .085, .035], [.0, -.34, .055, .026], [.1, -.35, .05, .024], [.06, -.42, .05, .022]].forEach(function (p) {
+      x.beginPath(); x.ellipse(tx + W * p[0], ty + H * p[1], W * p[2], H * p[3], 0, 0, Math.PI * 2); x.fill();
+    });
+  }
+
+  var canvases = Array.prototype.slice.call(document.querySelectorAll('canvas[data-scene]'));
+  function drawAll() { canvases.forEach(draw); }
+  drawAll();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
+  var pending = 0;
+  window.addEventListener('resize', function () {
+    cancelAnimationFrame(pending);
+    pending = requestAnimationFrame(drawAll);
+  });
+})();
+</script>
+
+</body>
+</html>
