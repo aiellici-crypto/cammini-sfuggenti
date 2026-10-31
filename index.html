@@ -2,12 +2,10 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Cammini sfuggenti</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cammini sfuggenti</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Cammini sfuggenti: un taccuino di cammini fatti a piedi, un articolo per ogni strada percorsa.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap">
 <style>
 /* Layout: una sola colonna di testo (~38em); le immagini respirano più larghe del testo, come finestre sul paesaggio. */
 :root {
@@ -177,6 +175,38 @@ blockquote p { margin: 0 !important; }
 footer.site { padding-block: 4rem 3.5rem; color: var(--soft); text-align: center; }
 footer.site .sig { font-family: var(--display); font-style: italic; font-size: 1.6rem; color: var(--ink); margin: 0 0 .25rem; }
 footer.site p { margin: 0; font-size: 1rem; }
+.linklike {
+  font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+  text-decoration: underline; text-decoration-color: var(--sage); text-underline-offset: .2em;
+}
+.linklike:hover { color: var(--sage); }
+
+/* finestra sui cookie */
+.cookie {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; justify-content: center; pointer-events: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+.cookie-box {
+  pointer-events: auto; width: 100%; max-width: 40rem;
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: 0 12px 40px rgba(30, 45, 38, .14);
+  padding: 1.25rem 1.5rem 1.35rem;
+}
+.cookie h2 { font-family: var(--display); font-weight: 500; font-size: 1.45rem; line-height: 1.2; margin: 0 0 .4rem; }
+.cookie p { font-size: .98rem; line-height: 1.55; color: var(--soft); margin: 0 0 1rem; }
+.cookie .actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.btn {
+  font-family: var(--text); font-size: 1rem; line-height: 1.2;
+  padding: .6rem 1.2rem; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+}
+.btn:hover { border-color: var(--sage); color: var(--sage); }
+.btn-primary { background: var(--ink); color: var(--mist); }
+.btn-primary:hover { background: var(--sage); border-color: var(--sage); color: var(--mist); }
 </style>
 </head>
 <body>
@@ -336,7 +366,19 @@ footer.site p { margin: 0; font-size: 1rem; }
   <div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
   <p class="sig">Cammini sfuggenti</p>
   <p>Scritto a piedi, un passo alla volta. © 2026</p>
+  <p><button type="button" class="linklike" id="cookie-apri">Preferenze cookie</button></p>
 </footer>
+
+<div class="cookie" id="cookie" role="dialog" aria-labelledby="cookie-titolo" aria-describedby="cookie-testo" hidden>
+  <div class="cookie-box">
+    <h2 id="cookie-titolo">Cookie e contenuti esterni</h2>
+    <p id="cookie-testo">Questo sito non usa cookie di profilazione né statistiche: ricorda solo la tua scelta, in questo browser. Se accetti, i caratteri tipografici vengono caricati da Google Fonts e il tuo indirizzo IP viene trasmesso a Google. Se rifiuti, il sito usa i caratteri già presenti sul tuo dispositivo.</p>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" id="cookie-accetta">Accetta tutto</button>
+      <button type="button" class="btn" id="cookie-rifiuta">Solo necessari</button>
+    </div>
+  </div>
+</div>
 
 <script>
 (function () {
@@ -541,6 +583,35 @@ footer.site p { margin: 0; font-size: 1rem; }
     cancelAnimationFrame(pending);
     pending = requestAnimationFrame(drawAll);
   });
+})();
+
+// Consenso: i caratteri di Google Fonts si caricano solo dopo "Accetta tutto".
+(function () {
+  var KEY = 'cammini-sfuggenti-consenso';
+  var FONTS = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap';
+  var box = document.getElementById('cookie');
+  function leggi() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function salva(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  function caricaFont() {
+    if (document.getElementById('google-fonts')) return;
+    var l = document.createElement('link');
+    l.id = 'google-fonts'; l.rel = 'stylesheet'; l.href = FONTS;
+    document.head.appendChild(l);
+  }
+  function apri() { box.hidden = false; document.getElementById('cookie-accetta').focus(); }
+  function chiudi() { box.hidden = true; }
+
+  var scelta = leggi();
+  if (scelta === 'tutti') caricaFont();
+  if (!scelta) box.hidden = false;
+
+  document.getElementById('cookie-accetta').addEventListener('click', function () { salva('tutti'); caricaFont(); chiudi(); });
+  document.getElementById('cookie-rifiuta').addEventListener('click', function () {
+    salva('necessari'); chiudi();
+    var l = document.getElementById('google-fonts'); if (l) l.remove();
+  });
+  document.getElementById('cookie-apri').addEventListener('click', apri);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden && leggi()) chiudi(); });
 })();
 </script>
 
