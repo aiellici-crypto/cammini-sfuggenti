@@ -6,6 +6,7 @@
 <title>Cammini sfuggenti</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Cammini sfuggenti: un taccuino di cammini fatti a piedi, un articolo per ogni strada percorsa.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3CclipPath id='f'%3E%3Cpath d='M10 60V27a22 22 0 0 1 44 0v33z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23f)'%3E%3Crect width='64' height='64' fill='%23dfe5e1'/%3E%3Ccircle cx='39' cy='25' r='7' fill='%23e6d2cb'/%3E%3Cpath d='M0 40C10 33 18 36 27 32S45 28 64 35V64H0Z' fill='%23b9c6be'/%3E%3Cpath d='M0 47C12 41 22 45 33 41S52 38 64 43V64H0Z' fill='%23869a8c'/%3E%3Cpath d='M22 64C29 58 39 57 35.5 52C33 48.6 37.5 46.4 40.6 44.6L41.3 45C38.7 46.9 35.8 49 38.4 52.2C42 56.8 35 60 33 64Z' fill='%23edf0ed'/%3E%3C/g%3E%3Cpath d='M10 60V27a22 22 0 0 1 44 0v33z' fill='none' stroke='%232c3833' stroke-width='3'/%3E%3C/svg%3E">
 <style>
 /* Layout: una sola colonna di testo (~38em); le immagini respirano più larghe del testo, come finestre sul paesaggio. */
 :root {
@@ -67,6 +68,8 @@ a:hover { color: var(--sage); }
 
 /* ——— testata ——— */
 .masthead { padding-block: clamp(3.5rem, 10vw, 7rem) 0; text-align: left; }
+.brand { display: block; width: 64px; height: 64px; color: var(--ink); margin: 0 0 1.75rem -6px; }
+.brand-foot { width: 48px; height: 48px; margin: 0 auto 1rem; }
 .eyebrow {
   font-family: var(--display);
   font-size: .95rem;
@@ -172,7 +175,7 @@ blockquote p { margin: 0 !important; }
 .cairn { display: flex; justify-content: center; padding-block: clamp(3.5rem, 9vw, 6rem) clamp(1.5rem, 4vw, 2.5rem); }
 .cairn svg { width: 46px; height: auto; color: var(--sage); }
 
-footer.site { padding-block: 4rem 3.5rem; color: var(--soft); text-align: center; }
+footer.site { padding-block: clamp(4.5rem, 10vw, 6.5rem) 3.5rem; color: var(--soft); text-align: center; }
 footer.site .sig { font-family: var(--display); font-style: italic; font-size: 1.6rem; color: var(--ink); margin: 0 0 .25rem; }
 footer.site p { margin: 0; font-size: 1rem; }
 .linklike {
@@ -219,9 +222,21 @@ footer.site p { margin: 0; font-size: 1rem; }
     <ellipse cx="24" cy="14" rx="9" ry="4.2" fill="currentColor" opacity=".85"/>
     <ellipse cx="23" cy="6.5" rx="5" ry="3.2" fill="currentColor"/>
   </symbol>
+  <clipPath id="finestra"><path d="M10 60V27a22 22 0 0 1 44 0v33z"/></clipPath>
+  <symbol id="marchio" viewBox="0 0 64 64">
+    <g clip-path="url(#finestra)">
+      <rect width="64" height="64" fill="#dfe5e1"/>
+      <circle cx="39" cy="25" r="7" fill="#e6d2cb"/>
+      <path d="M0 40C10 33 18 36 27 32S45 28 64 35V64H0Z" fill="#b9c6be"/>
+      <path d="M0 47C12 41 22 45 33 41S52 38 64 43V64H0Z" fill="#869a8c"/>
+      <path d="M22 64C29 58 39 57 35.5 52C33 48.6 37.5 46.4 40.6 44.6L41.3 45C38.7 46.9 35.8 49 38.4 52.2C42 56.8 35 60 33 64Z" fill="#edf0ed"/>
+    </g>
+    <path d="M10 60V27a22 22 0 0 1 44 0v33z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  </symbol>
 </svg>
 
 <header class="masthead col" id="inizio">
+  <svg class="brand" viewBox="0 0 64 64" aria-hidden="true"><use href="#marchio"/></svg>
   <p class="eyebrow">Taccuino di cammino</p>
   <h1 class="site-name">Cammini <span>sfuggenti</span></h1>
   <p class="intro">Strade percorse a piedi, lontano dalla fretta. Un articolo per ogni cammino: i chilometri, i paesaggi e quello che resta addosso quando si torna a casa.</p>
@@ -364,7 +379,7 @@ footer.site p { margin: 0; font-size: 1rem; }
 </article>
 
 <footer class="site col">
-  <div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
+  <svg class="brand brand-foot" viewBox="0 0 64 64" aria-hidden="true"><use href="#marchio"/></svg>
   <p class="sig">Cammini sfuggenti</p>
   <p>Scritto a piedi, un passo alla volta. © 2026</p>
   <p><button type="button" class="linklike" id="cookie-apri">Preferenze cookie</button></p>

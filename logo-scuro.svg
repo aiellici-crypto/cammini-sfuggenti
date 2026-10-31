@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 96" width="330" height="96">
+  <title>Cammini sfuggenti</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&amp;display=swap");
+    .w { font-family: "Cormorant Garamond", Garamond, Georgia, serif; font-style: italic; font-weight: 300; font-size: 44px; }
+  </style>
+  <defs>
+    <clipPath id="finestra"><path d="M10 60V27a22 22 0 0 1 44 0v33z"/></clipPath>
+  </defs>
+  <g transform="translate(0 4) scale(1.375)">
+    <g clip-path="url(#finestra)">
+      <rect width="64" height="64" fill="#dfe5e1"/>
+      <circle cx="39" cy="25" r="7" fill="#e6d2cb"/>
+      <path d="M0 40C10 33 18 36 27 32S45 28 64 35V64H0Z" fill="#b9c6be"/>
+      <path d="M0 47C12 41 22 45 33 41S52 38 64 43V64H0Z" fill="#869a8c"/>
+      <path d="M22 64C29 58 39 57 35.5 52C33 48.6 37.5 46.4 40.6 44.6L41.3 45C38.7 46.9 35.8 49 38.4 52.2C42 56.8 35 60 33 64Z" fill="#edf0ed"/>
+    </g>
+    <path d="M10 60V27a22 22 0 0 1 44 0v33z" fill="none" stroke="#dce3dd" stroke-width="1.1"/>
+  </g>
+  <text class="w" x="98" y="46" fill="#dce3dd">Cammini</text>
+  <text class="w" x="130" y="86" fill="#93a99a">sfuggenti</text>
+</svg>
