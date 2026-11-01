@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cammini sfuggenti</title>
+<script>document.documentElement.lang = 'it';</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Cammini sfuggenti: un taccuino di cammini fatti a piedi, un articolo per ogni strada percorsa.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3CclipPath id='f'%3E%3Cpath d='M10 60V27a22 22 0 0 1 44 0v33z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23f)'%3E%3Crect width='64' height='64' fill='%23dfe5e1'/%3E%3Ccircle cx='39' cy='25' r='7' fill='%23e6d2cb'/%3E%3Cpath d='M0 40C10 33 18 36 27 32S45 28 64 35V64H0Z' fill='%23b9c6be'/%3E%3Cpath d='M0 47C12 41 22 45 33 41S52 38 64 43V64H0Z' fill='%23869a8c'/%3E%3Cpath d='M22 64C29 58 39 57 35.5 52C33 48.6 37.5 46.4 40.6 44.6L41.3 45C38.7 46.9 35.8 49 38.4 52.2C42 56.8 35 60 33 64Z' fill='%23edf0ed'/%3E%3C/g%3E%3Cpath d='M10 60V27a22 22 0 0 1 44 0v33z' fill='none' stroke='%232c3833' stroke-width='3'/%3E%3C/svg%3E">
@@ -13,9 +14,11 @@
   --mist: #edf0ed;      /* fondo: nebbia di valle */
   --paper: #f6f7f4;     /* superfici chiare */
   --ink: #2c3833;       /* testo: ardesia verde */
-  --soft: #66746d;      /* testo secondario */
-  --sage: #869a8c;      /* accento: lichene */
+  --soft: #5c6a63;      /* testo secondario (4,9:1 sul fondo) */
+  --sage: #869a8c;      /* accento: lichene, solo decorativo */
+  --sage-ink: #566c5f;  /* lichene per il testo (4,9:1) */
   --dawn: #b48b82;      /* dettaglio: rosa dell'alba */
+  --dawn-ink: #8a6057;  /* rosa dell'alba per il testo (4,7:1) */
   --line: #d3dbd5;
   --img-bright: 1;
 
@@ -29,12 +32,14 @@
   :root:not([data-theme="light"]) {
     --mist: #141917; --paper: #1a201d; --ink: #dce3dd; --soft: #9aa69f;
     --sage: #93a99a; --dawn: #c9a197; --line: #2c3531; --img-bright: .86;
+    --sage-ink: #93a99a; --dawn-ink: #c9a197;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --mist: #141917; --paper: #1a201d; --ink: #dce3dd; --soft: #9aa69f;
   --sage: #93a99a; --dawn: #c9a197; --line: #2c3531; --img-bright: .86;
+  --sage-ink: #93a99a; --dawn-ink: #c9a197;
   color-scheme: dark;
 }
 
@@ -55,8 +60,16 @@ body {
 }
 
 a { color: inherit; text-decoration-color: var(--sage); text-underline-offset: .2em; text-decoration-thickness: 1px; }
-a:hover { color: var(--sage); }
-:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; border-radius: 2px; }
+a:hover { color: var(--sage-ink); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+
+/* link per saltare direttamente ai cammini, visibile solo con la tastiera */
+.skip {
+  position: absolute; left: -999rem; top: 0; z-index: 20;
+  background: var(--paper); color: var(--ink); padding: .6rem 1rem; border: 1px solid var(--ink);
+}
+#contenuto:focus { outline: none; }
+.skip:focus { left: max(16px, env(safe-area-inset-left, 0px)); top: calc(16px + env(safe-area-inset-top, 0px)); }
 
 /* colonna unica: il testo al centro, le figure possono allargarsi */
 .col {
@@ -88,7 +101,7 @@ a:hover { color: var(--sage); }
   margin: .35em 0 .3em;
   text-wrap: balance;
 }
-.site-name span { display: block; padding-left: 1.1em; color: var(--sage); }
+.site-name span { display: block; padding-left: 1.1em; color: var(--sage-ink); }
 .intro { font-size: 1.25rem; color: var(--soft); max-width: 32rem; margin: 0; font-style: italic; font-weight: 300; }
 
 /* immagini */
@@ -123,7 +136,7 @@ figcaption {
 }
 .index .yr, .index .km { font-variant-numeric: tabular-nums oldstyle-nums; color: var(--soft); font-size: 1rem; }
 .index .nm { font-family: var(--display); font-size: 1.55rem; line-height: 1.2; min-width: 0; }
-.index a:hover .nm { color: var(--sage); }
+.index a:hover .nm { color: var(--sage-ink); }
 .index .total { margin: 1rem 0 0; color: var(--soft); font-size: 1rem; font-style: italic; }
 
 /* ——— articoli ——— */
@@ -131,7 +144,7 @@ figcaption {
 .walk header { margin-bottom: clamp(2rem, 5vw, 3rem); }
 .walk .when {
   font-family: var(--display); font-size: .95rem; letter-spacing: .2em;
-  text-transform: uppercase; color: var(--dawn); margin: 0;
+  text-transform: uppercase; color: var(--dawn-ink); margin: 0;
 }
 .walk h2 {
   font-family: var(--display); font-weight: 400;
@@ -156,13 +169,12 @@ figcaption {
 .walk p { margin: 0 0 1.25em; text-wrap: pretty; hyphens: auto; }
 .walk .body > p:first-of-type::first-line { font-variant: small-caps; letter-spacing: .04em; }
 
-blockquote {
+.walk .pull {
   margin: 2.5rem 0; padding: 0;
   font-family: var(--display); font-style: italic; font-weight: 400;
-  font-size: clamp(1.7rem, 4.5vw, 2.2rem); line-height: 1.25; color: var(--sage);
+  font-size: clamp(1.7rem, 4.5vw, 2.2rem); line-height: 1.25; color: var(--sage-ink);
   text-wrap: balance;
 }
-blockquote p { margin: 0 !important; }
 
 .walk .wide.inset { margin-block: 2.75rem; }
 .walk .mid { margin-block: 2.5rem; }
@@ -182,7 +194,7 @@ footer.site p { margin: 0; font-size: 1rem; }
   font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
   text-decoration: underline; text-decoration-color: var(--sage); text-underline-offset: .2em;
 }
-.linklike:hover { color: var(--sage); }
+.linklike:hover { color: var(--sage-ink); }
 
 /* finestra sui cookie */
 [hidden] { display: none !important; }
@@ -208,9 +220,9 @@ footer.site p { margin: 0; font-size: 1rem; }
   padding: .6rem 1.2rem; border-radius: 999px; cursor: pointer;
   border: 1px solid var(--ink); background: transparent; color: var(--ink);
 }
-.btn:hover { border-color: var(--sage); color: var(--sage); }
+.btn:hover { border-color: var(--sage-ink); color: var(--sage-ink); }
 .btn-primary { background: var(--ink); color: var(--mist); }
-.btn-primary:hover { background: var(--sage); border-color: var(--sage); color: var(--mist); }
+.btn-primary:hover { background: var(--sage-ink); border-color: var(--sage-ink); color: var(--mist); }
 </style>
 </head>
 <body>
@@ -234,6 +246,8 @@ footer.site p { margin: 0; font-size: 1rem; }
     <path d="M10 60V27a22 22 0 0 1 44 0v33z" fill="none" stroke="currentColor" stroke-width="1.4"/>
   </symbol>
 </svg>
+
+<a class="skip" href="#contenuto">Vai ai cammini</a>
 
 <header class="masthead col" id="inizio">
   <svg class="brand" viewBox="0 0 64 64" aria-hidden="true"><use href="#marchio"/></svg>
@@ -259,6 +273,7 @@ footer.site p { margin: 0; font-size: 1rem; }
 
 <div class="cairn" aria-hidden="true"><svg viewBox="0 0 46 40"><use href="#ometto"/></svg></div>
 
+<main id="contenuto" tabindex="-1">
 <!-- ——— Via degli Dei ——— -->
 <article class="walk col" id="via-degli-dei">
   <header>
@@ -279,7 +294,7 @@ footer.site p { margin: 0; font-size: 1rem; }
   <div class="body">
     <p>Ho lasciato Bologna salendo sotto i portici di San Luca, quando la città dormiva ancora. Seicentosessantasei archi, contati uno per uno per non pensare alla salita. Dal santuario il primo sguardo sui colli: dietro restava tutto ciò che conoscevo, davanti si aprivano crinali uno dopo l'altro, sempre più chiari, fino a confondersi con il cielo.</p>
     <p>Il secondo giorno la nebbia ha riempito la valle. Camminavo sopra un mare bianco, e i paesi sotto di me esistevano solo per il suono delle campane. Sul cammino il tempo si misura in un altro modo: una fontana, un'ombra, la prossima curva.</p>
-    <blockquote><p>Tra le pietre della vecchia strada romana ho sentito i passi di chi era passato prima di me.</p></blockquote>
+    <p class="pull">Tra le pietre della vecchia strada romana ho sentito i passi di chi era passato prima di me.</p>
     <p>Dopo Madonna dei Fornelli il bosco di faggi si apre su tratti di Flaminia Militare, la strada che i legionari tracciarono nel 187 a.C. Le pietre sono ancora lì, lucidate da duemila anni di suole. Quella notte ho dormito in un rifugio con sei sconosciuti, che la mattina dopo non lo erano più.</p>
     <p>L'ultimo giorno, da Fiesole, Firenze è apparsa tutta insieme, con la cupola al centro come un sasso nel palmo di una mano. Ho fatto l'ultima discesa piano, senza nessuna fretta di arrivare.</p>
   </div>
@@ -308,7 +323,7 @@ footer.site p { margin: 0; font-size: 1rem; }
   <div class="body">
     <p>Da Bomerano il sentiero parte tra orti e muretti a secco, poi la montagna si apre di colpo e sotto c'è soltanto il mare. Non è un cammino lungo. È un cammino lento, perché ogni dieci passi viene voglia di fermarsi.</p>
     <p>Il tracciato corre a mezza costa, a circa cinquecento metri sul mare. Le terrazze di limoni scendono verso Positano come gradini per giganti, e le capre sembrano le uniche a sapere esattamente dove stanno andando.</p>
-    <blockquote><p>Il mare, da lassù, non fa rumore. Si limita a esserci.</p></blockquote>
+    <p class="pull">Il mare, da lassù, non fa rumore. Si limita a esserci.</p>
     <p>A Nocelle, una spremuta di limone su un gradino di pietra e nessuna voglia di ripartire. Per scendere a Positano restano più di millesettecento scalini: li ho fatti contando le lucertole invece dei gradini.</p>
   </div>
   <p class="back"><a href="#inizio">Torna all'inizio</a></p>
@@ -336,7 +351,7 @@ footer.site p { margin: 0; font-size: 1rem; }
   <div class="body">
     <p>In Toscana la Francigena è una strada bianca che non ha fretta. Da San Miniato a Gambassi Terme le colline si susseguono morbide, e ogni crinale ha la sua fila di cipressi che indica la strada meglio di qualsiasi segnavia.</p>
     <p>San Gimignano è apparsa di pomeriggio, con le torri ferme come un gruppo di persone in attesa. Ho dormito in un ostello per pellegrini, con il timbro sulla credenziale ancora umido d'inchiostro.</p>
-    <blockquote><p>Ogni timbro sulla credenziale è un piccolo giorno che resta.</p></blockquote>
+    <p class="pull">Ogni timbro sulla credenziale è un piccolo giorno che resta.</p>
     <figure class="mid">
       <canvas class="plate r-mid" data-scene="campi" role="img" aria-label="Campi di grano e un castello lontano sulla collina"></canvas>
       <figcaption>Verso Monteriggioni, la luce del tardo pomeriggio sui campi.</figcaption>
@@ -368,7 +383,7 @@ footer.site p { margin: 0; font-size: 1rem; }
   <div class="body">
     <p>Il Cammino di Oropa comincia dove finisce la pianura. A Santhià, in ottobre, le risaie sono già asciutte, e il Monte Rosa all'orizzonte sembra disegnato a matita su un foglio azzurro.</p>
     <p>Il percorso sale piano, lungo la Serra morenica e attraverso i borghi del Biellese. Castagne sui sentieri, fumo dai camini, cani che accompagnano per un tratto e poi tornano indietro. È un cammino breve, adatto a un lungo fine settimana, ma lascia addosso una quiete lunga.</p>
-    <blockquote><p>Le montagne non si avvicinano: a un certo punto ti accorgi di esserci dentro.</p></blockquote>
+    <p class="pull">Le montagne non si avvicinano: a un certo punto ti accorgi di esserci dentro.</p>
     <figure class="mid">
       <canvas class="plate r-mid" data-scene="oropa" role="img" aria-label="Valle di montagna con nuvole basse e abeti"></canvas>
       <figcaption>Valle di Oropa, nuvole basse sull'ultima tappa.</figcaption>
@@ -378,6 +393,8 @@ footer.site p { margin: 0; font-size: 1rem; }
   <p class="back"><a href="#inizio">Torna all'inizio</a></p>
 </article>
 
+</main>
+
 <footer class="site col">
   <svg class="brand brand-foot" viewBox="0 0 64 64" aria-hidden="true"><use href="#marchio"/></svg>
   <p class="sig">Cammini sfuggenti</p>
@@ -385,7 +402,7 @@ footer.site p { margin: 0; font-size: 1rem; }
   <p><button type="button" class="linklike" id="cookie-apri">Preferenze cookie</button></p>
 </footer>
 
-<div class="cookie" id="cookie" role="dialog" aria-labelledby="cookie-titolo" aria-describedby="cookie-testo" hidden>
+<div class="cookie" id="cookie" role="region" aria-labelledby="cookie-titolo" hidden>
   <div class="cookie-box">
     <h2 id="cookie-titolo">Cookie e contenuti esterni</h2>
     <p id="cookie-testo">Questo sito non usa cookie di profilazione né statistiche: ricorda solo la tua scelta, in questo browser. Se accetti, i caratteri tipografici vengono caricati da Google Fonts e il tuo indirizzo IP viene trasmesso a Google. Se rifiuti, il sito usa i caratteri già presenti sul tuo dispositivo.</p>
@@ -614,8 +631,13 @@ footer.site p { margin: 0; font-size: 1rem; }
     l.id = 'google-fonts'; l.rel = 'stylesheet'; l.href = FONTS;
     document.head.appendChild(l);
   }
-  function apri() { box.hidden = false; document.getElementById('cookie-accetta').focus(); }
-  function chiudi() { box.hidden = true; }
+  var ritorno = null;
+  function apri() { ritorno = document.activeElement; box.hidden = false; document.getElementById('cookie-accetta').focus(); }
+  function chiudi() {
+    box.hidden = true;
+    // riporta il focus dove si trovava, così chi usa la tastiera non perde il segno
+    if (ritorno && ritorno.focus) { ritorno.focus(); ritorno = null; }
+  }
 
   var scelta = leggi();
   if (scelta === 'tutti') caricaFont();
